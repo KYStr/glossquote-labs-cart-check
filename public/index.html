@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>折扣與免運試算：加購後實際多付或少付多少 | GlossQuote</title>
+  <meta name="description" content="輸入商品、折扣、折價券和運費，再試算加購門檻商品後的最終實付。把商品成本一起算進差額，不只看免運金額；在瀏覽器本機計算。">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/styles/app.css">
+  <script type="module" src="/js/app.mjs"></script>
+</head>
+<body>
+  <a class="skip" href="#cart-form">跳至試算器</a>
+  <header class="topbar"><a class="brand" href="https://glossquote.com/index.html" rel="noreferrer">Gloss Tools <span>by GlossQuote</span></a><nav aria-label="導覽"><a id="home-link" href="https://glossquote.com/index.html" rel="noreferrer">工具首頁</a><a href="/en/index.html" lang="en" hreflang="en">English</a></nav></header>
+  <main>
+    <div class="intro"><h1>折扣與免運試算</h1><p>先算現在要付多少，再加入一件商品重新計算，確認免運後是否真的划算。</p></div>
+    <noscript>請啟用 JavaScript，以便在本頁本機試算。</noscript>
+    <div class="workspace">
+      <form id="cart-form" novalidate autocomplete="off">
+        <section aria-labelledby="cart-heading"><div class="section-head"><h2 id="cart-heading">目前購物籃</h2><span id="item-count" class="muted">1 / 30</span></div><p id="item-help" class="help">最多 30 個項目；數量 1–1000。金額最多兩位小數，不填貨幣符號或逗號。</p>
+          <div id="items"></div><button id="add-item" type="button" class="secondary">新增商品</button>
+        </section>
+        <section aria-labelledby="rules-heading"><h2 id="rules-heading">折扣與運費</h2><div class="fields two"><label for="percentOff">百分比折扣（%）<input id="percentOff" name="percentOff" type="text" inputmode="decimal" value="0" aria-describedby="discount-help"></label><label for="fixedCoupon">固定折價券<input id="fixedCoupon" name="fixedCoupon" type="text" inputmode="decimal" value="0" aria-describedby="discount-help"></label></div><p id="discount-help" class="help">先算百分比折扣並捨入到分，再扣固定券。折價券只折商品，不折運費。</p>
+          <div class="fields two"><label for="shipping">運費<input id="shipping" name="shipping" type="text" inputmode="decimal" value="0"></label><label for="freeShippingThreshold">免運門檻（選填）<input id="freeShippingThreshold" name="freeShippingThreshold" type="text" inputmode="decimal" value="" aria-describedby="threshold-help"></label></div>
+          <label for="thresholdBasis">門檻達標依據</label><select id="thresholdBasis" name="thresholdBasis" aria-describedby="threshold-help"><option value="post-discount">折後商品淨額（預設）</option><option value="pre-discount">折前商品小計</option></select><p id="threshold-help" class="help">留空表示沒有免運方案；填 0 表示門檻為零。折前或折後依商家規則選擇。</p>
+        </section>
+        <section class="add-on-section" aria-label="比較加購一件／一組商品"><label class="toggle" for="addOnEnabled"><input id="addOnEnabled" type="checkbox">比較加購一件／一組商品</label><div id="add-on-fields" hidden><div class="fields two"><label for="addOnName">加購名稱<input id="addOnName" name="addOnName" type="text" value=""></label><label for="addOnPrice">加購價格（一件／一組）<input id="addOnPrice" name="addOnPrice" type="text" inputmode="decimal" value=""></label></div><p class="help">加購後會重新計算全部折扣與運費。差額已包含加購價格。</p></div></section>
+        <p id="form-error" class="error" role="alert" hidden></p>
+        <div class="actions"><button id="calculate" class="primary" type="submit">計算實付與差額</button><button id="clear" type="button" class="quiet">清除全部</button></div>
+        <p class="help privacy">在本頁計算，不上傳或保存輸入。請使用同一貨幣、同一店家的假設。</p><p class="help">這是手動試算，商家折扣／免運規則請自行確認。未計稅金。</p>
+      </form>
+      <section id="comparison" class="comparison" aria-labelledby="results-heading"><h2 id="results-heading">實付比較</h2><p id="empty-result" class="empty">填入購物項目後計算，查看實付構成。開啟加購比較可看實際多付或少付多少。</p><div id="results"></div>
+        <div class="copy-actions"><button id="copy" type="button" class="secondary" disabled>複製完整試算</button><p id="status" role="status" aria-live="polite"></p></div>
+        <div id="copy-fallback" hidden><label for="report-text">完整試算文字（唯讀）</label><textarea id="report-text" readonly rows="12"></textarea></div>
+      </section>
+    </div>
+    <section class="faq" aria-labelledby="faq-heading"><h2 id="faq-heading">試算規則</h2><details><summary>免運門檻是看折前還是折後？</summary><p>視商家規則而定。請明確選擇「折前商品小計」或「折後商品淨額」。本頁預設折後，但不代表所有商家都這樣計算。</p></details>
+<details><summary>折價券如何套用？</summary><p>先計算全籃百分比折扣，折扣金額以 0.5 分進位捨入到分，再扣固定券。商品淨額最低為零，固定券多餘的部分不退現金。例：0.05 的 10% 折扣捨入為 0.01，折後為 0.04。</p></details>
+<details><summary>差額包括加購商品的錢嗎？</summary><p>包括。原實付 980.00、加購後 1000.00 時，差額是多付 20.00，即使運費變成零也不能只稱省下運費。所有數值皆為同一未指定貨幣的示例。</p></details>
+<details><summary>有包括稅金或匯率嗎？</summary><p>沒有。這是單一貨幣的數學試算，請用同一貨幣與同一店家假設輸入所有金額，不含稅金、匯率、會員或其他特殊規則。</p></details>
+<details><summary>會連線讀取或保存購物車嗎？</summary><p>不會。本頁只處理手動輸入，輸入與結果只留在本頁記憶體。清除、離開或重新載入會清空；複製只在你按下按鈕後進行。</p></details></section>
+  </main>
+  <footer>Gloss Tools by GlossQuote · 本機手動試算</footer>
+  <template id="item-template"><fieldset class="item-row"><legend></legend><div class="item-fields"><label data-label="name"><span></span><input data-field="name" type="text" aria-describedby="item-help"></label><label data-label="price"><span></span><input data-field="price" type="text" inputmode="decimal" aria-describedby="item-help"></label><label data-label="quantity"><span></span><input data-field="quantity" type="text" inputmode="numeric" value="1" aria-describedby="item-help"></label><button type="button" data-remove class="quiet"></button></div><p data-line class="row-line" hidden></p></fieldset></template>
+</body>
+</html>

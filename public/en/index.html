@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Free Shipping Calculator: Check the True Cost of Adding an Item | GlossQuote</title>
+  <meta name="description" content="Compare your current cart with an add-on after discounts and shipping. See the actual out-of-pocket difference, including the extra item price, using a local browser calculation.">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/styles/app.css">
+  <script type="module" src="/js/app.mjs"></script>
+</head>
+<body>
+  <a class="skip" href="#cart-form">Skip to calculator</a>
+  <header class="topbar"><a class="brand" href="https://glossquote.com/en/index.html" rel="noreferrer">Gloss Tools <span>by GlossQuote</span></a><nav aria-label="Navigation"><a id="home-link" href="https://glossquote.com/en/index.html" rel="noreferrer">All tools</a><a href="/index.html" lang="zh-Hant" hreflang="zh-Hant">繁體中文</a></nav></header>
+  <main>
+    <div class="intro"><h1>Discount and free-shipping calculator</h1><p>Compare the current total with an added item and see whether reaching free shipping changes what you actually pay.</p></div>
+    <noscript>Enable JavaScript to calculate locally on this page.</noscript>
+    <div class="workspace">
+      <form id="cart-form" novalidate autocomplete="off">
+        <section aria-labelledby="cart-heading"><div class="section-head"><h2 id="cart-heading">Current cart</h2><span id="item-count" class="muted">1 / 30</span></div><p id="item-help" class="help">Up to 30 items; quantities 1–1000. Use at most two decimal places, with no currency symbols or commas.</p>
+          <div id="items"></div><button id="add-item" type="button" class="secondary">Add item</button>
+        </section>
+        <section aria-labelledby="rules-heading"><h2 id="rules-heading">Discounts and shipping</h2><div class="fields two"><label for="percentOff">Percentage discount (%)<input id="percentOff" name="percentOff" type="text" inputmode="decimal" value="0" aria-describedby="discount-help"></label><label for="fixedCoupon">Fixed coupon<input id="fixedCoupon" name="fixedCoupon" type="text" inputmode="decimal" value="0" aria-describedby="discount-help"></label></div><p id="discount-help" class="help">Round the percentage discount to cents first, then apply the fixed coupon. Discounts apply to merchandise, not shipping.</p>
+          <div class="fields two"><label for="shipping">Shipping charge<input id="shipping" name="shipping" type="text" inputmode="decimal" value="0"></label><label for="freeShippingThreshold">Free-shipping threshold (optional)<input id="freeShippingThreshold" name="freeShippingThreshold" type="text" inputmode="decimal" value="" aria-describedby="threshold-help"></label></div>
+          <label for="thresholdBasis">Threshold is measured against</label><select id="thresholdBasis" name="thresholdBasis" aria-describedby="threshold-help"><option value="post-discount">After discounts (default)</option><option value="pre-discount">Subtotal before discounts</option></select><p id="threshold-help" class="help">Blank means no free-shipping offer; 0 means a zero threshold. “After discounts” uses net merchandise after both discounts. Choose the rule used by the store.</p>
+        </section>
+        <section class="add-on-section" aria-label="Compare adding one item or bundle"><label class="toggle" for="addOnEnabled"><input id="addOnEnabled" type="checkbox">Compare adding one item or bundle</label><div id="add-on-fields" hidden><div class="fields two"><label for="addOnName">Add-on name<input id="addOnName" name="addOnName" type="text" value=""></label><label for="addOnPrice">Add-on price (one item or bundle)<input id="addOnPrice" name="addOnPrice" type="text" inputmode="decimal" value=""></label></div><p class="help">All discounts and shipping are recalculated. The difference includes the add-on price.</p></div></section>
+        <p id="form-error" class="error" role="alert" hidden></p>
+        <div class="actions"><button id="calculate" class="primary" type="submit">Calculate totals and difference</button><button id="clear" type="button" class="quiet">Clear all</button></div>
+        <p class="help privacy">Calculated on this page without uploading or saving inputs. Use one currency and one store’s assumptions.</p><p class="help">This is a manual estimate. Check the store’s discount and shipping rules. Taxes are not included.</p>
+      </form>
+      <section id="comparison" class="comparison" aria-labelledby="results-heading"><h2 id="results-heading">Compare what you pay</h2><p id="empty-result" class="empty">Enter your items and calculate to see the total breakdown. Enable the add-on to compare how much more or less you would pay.</p><div id="results"></div>
+        <div class="copy-actions"><button id="copy" type="button" class="secondary" disabled>Copy full calculation</button><p id="status" role="status" aria-live="polite"></p></div>
+        <div id="copy-fallback" hidden><label for="report-text">Full calculation text (read-only)</label><textarea id="report-text" readonly rows="12"></textarea></div>
+      </section>
+    </div>
+    <section class="faq" aria-labelledby="faq-heading"><h2 id="faq-heading">How the calculation works</h2><details><summary>Is free shipping measured before or after discounts?</summary><p>That depends on the store. Choose the subtotal before discounts or net merchandise after discounts. This page defaults to after discounts; stores may use a different rule.</p></details>
+<details><summary>How are coupons applied?</summary><p>First, the cart-wide percentage discount is rounded to cents, with half a cent rounded up. Then the fixed coupon is deducted. Net merchandise cannot fall below zero and unused coupon value is not refunded. Example: a 10% discount on 0.05 rounds to 0.01, leaving 0.04.</p></details>
+<details><summary>Does the difference include the extra item?</summary><p>Yes. If the current total is 980.00 and the add-on total is 1000.00, you pay 20.00 more. Free shipping alone does not describe the difference. These example amounts use one unspecified currency.</p></details>
+<details><summary>Are taxes or exchange rates included?</summary><p>No. This is a mathematical estimate using one currency. Enter all amounts in the same currency with one store’s assumptions. Taxes, exchange rates, membership discounts and other special rules are not included.</p></details>
+<details><summary>Does this page read or save my shopping cart?</summary><p>No. Only manual inputs are used, and inputs and results stay in this page’s memory. Clearing, leaving or reloading the page removes them. Copying only happens when you press the button.</p></details></section>
+  </main>
+  <footer>Gloss Tools by GlossQuote · Local manual calculation</footer>
+  <template id="item-template"><fieldset class="item-row"><legend></legend><div class="item-fields"><label data-label="name"><span></span><input data-field="name" type="text" aria-describedby="item-help"></label><label data-label="price"><span></span><input data-field="price" type="text" inputmode="decimal" aria-describedby="item-help"></label><label data-label="quantity"><span></span><input data-field="quantity" type="text" inputmode="numeric" value="1" aria-describedby="item-help"></label><button type="button" data-remove class="quiet"></button></div><p data-line class="row-line" hidden></p></fieldset></template>
+</body>
+</html>
