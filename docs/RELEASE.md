@@ -2,7 +2,11 @@
 
 M1 本機版已由主代理獨立驗收。M2 是正式產物與獨立公開來源的準備，不代表 Cloudflare、首頁或外部驗收已通過。預覽保持 noindex/nofollow、僅 loopback；所有 M1 runtime bytes 由 release helper 的固定 SHA-256 gate 保護。
 
-主代理已放行 M2，目標 public repository 為 KYStr/glossquote-labs-cart-check。依最新發布安全指令，create/push 在主代理解除暫停前不得執行。本機候選、固定 local commit ZIP 與乾淨解壓重建可繼續。隔離 staging/CLI state/證據只在孵化器專用 .runs/github-publish/glossquote-labs-cart-check/**，沒有全域／系統 Git config 或 credential 設定操作。
+主代理已放行 M2，[KYStr/glossquote-labs-cart-check](https://github.com/KYStr/glossquote-labs-cart-check) 已實查為 **PUBLIC**、isPrivate=false，main來源已推送並核對遠端HEAD。發布限制已解除，並非目前仍暫停或未驗；先前暫停屬下述歷史事件。此文件所在版本的固定commit由Git metadata標識，對應ZIP／逐blob／乾淨重建與remote HEAD證據保存在獨立交接紀錄，避免把自我參照commit hash寫回source。M3 hosting／首頁與外部驗收尚未執行，PUBLIC來源不等於正式網站已部署。
+
+已驗的來源沿革：初次來源73d9767bb1d02f4c1c0c48d9ecf7c8625fd29829公開；主代理發現缺網域綁定後，bca9623c8085d3406e0f914fd58039545bc7bbc7補唯一cart custom domain，PUBLIC remote HEAD、42 Git blob-byte ZIP、安全解壓和55/55＋全部gates已實查通過。這兩個commit是保留的歷史基準；後續本文件的一致性修正沿同一歷史fast-forward，不重寫已發布commit或M1 runtime。最新固定source依本repo Git metadata和交接證據核對。
+
+發布安全歷史：其他owner誤設helper時，主代理曾要求暫停create/push；使用者授權主代理只移除四個已確認assignment後解除，不能稱恢復未知pre-state。本工具未執行setup-git/login/refresh或global/system writes。各publication block都先capture、後verify已知Git config指紋，Windows完整Environment也相同；需要helper時只有單次git -c。隔離staging/CLI state／證據只在孵化器專用 .runs/github-publish/glossquote-labs-cart-check/**，不讀token或credential store。
 
 公開副本用 scripts/source-files.mjs 的明列清單；內部對話識別、routing、HANDOFF/project 狀態、.runs、dist、node_modules、secret/購物輸入都不在公開 copy。公開 README 由同一 reviewed helper 生成，說明候選和 live release 的不同。不得自動安裝、改 runtime dependency 或添加未授權 license。
 
@@ -12,7 +16,7 @@ wrangler.jsonc 是 assets-only；compatibility_date=2026-10-13、html_handling=n
 
 Wrangler help/schema 必須先用既有4.147.0核對。scripts/dry-run.mjs 只建立新 task-owned child USERPROFILE/HOME/config/cache/temp/log/project；只繼承明列 OS/tool discovery 值，不讀或傳 credential variables，執行 deploy --dry-run --autoconfig=false。不調用 install、login、resource provisioning 或遠端部署。dry-run 是 packaging 檢查，不能代替 Cloudflare live 證據。
 
-發布解除暫停後：使用 reviewed copy 的 local Git repository，固定 commit 後 git archive ZIP；scripts/source-archive.mjs 檢查 central/local ZIP headers、CRC、path/duplicate/link/cap，再逐 Git blob bytes/hash 比對，解壓至新目錄。乾淨 copy 重跑 npm test、npm run check:production、npm run build:production，建置前後檔案 manifest 都必須匹配。實查 GitHub visibility=PUBLIC、遠端 HEAD=固定 commit。初始候選發布尚未取得此證據，不能稱 published。
+已執行的固定來源驗證：使用reviewed copy的獨立local Git repository，固定commit後git archive ZIP；scripts/source-archive.mjs檢查central/local ZIP headers、CRC、path/duplicate/link/cap，再逐Git blob bytes/hash比對並解壓到新目錄。乾淨copy的npm test、check、build、build:production、check:production全部exit0，source bytes未變且13個production檔逐一與候選相同。GitHub visibility=PUBLIC、remote HEAD=固定source commit已驗。後續任何source修正仍須重新固定ZIP并驗其scope；已驗且未受影響的runtime/browser證據保留，不能把來源PASS擴稱hosting／外驗PASS。
 
 M3 僅主代理操作。候選 host 為 cart.glossquote.com。production candidate需通過 SEO雙語、canonical/hreflang、robots/sitemap、headers/CSP/404、精確 build manifest；部署免費 Cloudflare後做真實HTTP與雙語流程驗證，之後才將共享首頁條目改為published並重新部署驗證。
 
