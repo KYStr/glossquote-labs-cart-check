@@ -114,6 +114,19 @@ test('M2 exact static Worker config forbids observability, resources and fallbac
   }
 }));
 
+test('M2 exact custom domain is cart.glossquote.com; absent/wrong routes fail closed', () => fixture(async root => {
+  const config=JSON.parse(String(await safeRead(root,'wrangler.jsonc')));
+  assert.deepEqual(config.routes,[{pattern:'cart.glossquote.com',custom_domain:true}]);
+  await buildCandidate({root,production:true});
+  const before=await manifest(path.join(root,'dist-production'),PRODUCTION_ASSETS);
+  const missing={...config};delete missing.routes;
+  for(const invalid of [missing,{...config,routes:[{pattern:'wrong.glossquote.com',custom_domain:true}]},{...config,routes:[{pattern:'cart.glossquote.com',custom_domain:false}]},{...config,routes:[...config.routes,{pattern:'extra.glossquote.com',custom_domain:true}]}]) {
+    await writeFile(path.join(root,'wrangler.jsonc'),JSON.stringify(invalid));
+    await assert.rejects(buildCandidate({root,production:true}),/Exact static-only/);
+    assert.deepEqual(await manifest(path.join(root,'dist-production'),PRODUCTION_ASSETS),before);
+  }
+}));
+
 test('M2 isolated Wrangler child environment is an explicit credential-free allowlist', () => {
   const state = path.resolve('fictional-state'); const environment=isolatedEnvironment(state);
   for(const key of Object.keys(environment)) assert.ok(['SystemRoot','WINDIR','ComSpec','PATH','Path','PATHEXT','NUMBER_OF_PROCESSORS','PROCESSOR_ARCHITECTURE','USERPROFILE','HOME','APPDATA','LOCALAPPDATA','XDG_CONFIG_HOME','XDG_CACHE_HOME','TEMP','TMP','CI','BROWSER','WRANGLER_SEND_METRICS','WRANGLER_LOG_PATH','NO_COLOR'].includes(key));

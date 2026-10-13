@@ -22,6 +22,7 @@ export const FROZEN_M1 = Object.freeze({
 export const WORKER_CONFIG = Object.freeze({
   name: 'glossquote-labs-cart-check', compatibility_date: '2026-10-13',
   workers_dev: false, preview_urls: false, send_metrics: false,
+  routes: [{ pattern: 'cart.glossquote.com', custom_domain: true }],
   assets: { directory: './dist-production', html_handling: 'none', not_found_handling: '404-page' },
   observability: { enabled: false, logs: { enabled: false, invocation_logs: false }, traces: { enabled: false } }
 });

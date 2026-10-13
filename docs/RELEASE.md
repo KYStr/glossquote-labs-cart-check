@@ -8,7 +8,7 @@ M1 本機版已由主代理獨立驗收。M2 是正式產物與獨立公開來�
 
 執行 npm test、npm run check、npm run build；預覽 dist 必須等於 M1 runtime。再執行 npm run build:production、npm run check:production。Production 獨立在 dist-production，固定 https://cart.glossquote.com/index.html 和 /en/index.html，正確 lang、title/description、self canonical、互返 zh-Hant/en/x-default、OG、WebApplication JSON-LD、robots 與兩語 sitemap；_headers 僅允許兩個精確 JSON-LD SHA-256，不含 unsafe-inline/eval。JS/CSS/calculation/state/workflow 不變。
 
-wrangler.jsonc 是 assets-only；compatibility_date=2026-10-13、html_handling=none、not_found_handling=404-page；workers.dev/preview_urls/metrics/logs/traces 全部關閉，無 account、binding、vars、route 或新資源。純本機 production server 僅 loopback；未知路徑實際404回雙語錯誤頁、正確 MIME、HEAD/405 與 CSP/security headers。_headers 不作 asset 提供。
+wrangler.jsonc 是 assets-only；compatibility_date=2026-10-13、html_handling=none、not_found_handling=404-page；workers.dev/preview_urls/metrics/logs/traces 全部關閉，無 account、binding 或 vars。唯一 route 必須精確為 `{pattern:'cart.glossquote.com',custom_domain:true}`；M3由主代理按既有授權執行此配置，沒有未定義的route注入流程。M2只驗配置與dry-run，不執行deploy/DNS；缺route、錯域名、非custom domain或額外route全部拒絕。純本機 production server 僅 loopback；未知路徑實際404回雙語錯誤頁、正確 MIME、HEAD/405 與 CSP/security headers。_headers 不作 asset 提供。
 
 Wrangler help/schema 必須先用既有4.147.0核對。scripts/dry-run.mjs 只建立新 task-owned child USERPROFILE/HOME/config/cache/temp/log/project；只繼承明列 OS/tool discovery 值，不讀或傳 credential variables，執行 deploy --dry-run --autoconfig=false。不調用 install、login、resource provisioning 或遠端部署。dry-run 是 packaging 檢查，不能代替 Cloudflare live 證據。
 

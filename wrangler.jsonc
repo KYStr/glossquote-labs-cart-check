@@ -4,6 +4,7 @@
   "workers_dev": false,
   "preview_urls": false,
   "send_metrics": false,
+  "routes": [{ "pattern": "cart.glossquote.com", "custom_domain": true }],
   "assets": {
     "directory": "./dist-production",
     "html_handling": "none",
